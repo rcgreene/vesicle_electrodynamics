@@ -1,0 +1,29 @@
+function mu = get_mu(chnkr, smp)
+    der_mat = lege.dermat(chnkr.k);
+    n = chnkr.k;
+    p = chnkr.npt/chnkr.k;
+    xs = zeros(size(chnkr.r));
+    xs(1, 1:end, 1:end) = der_mat * reshape(chnkr.r(1, 1:end, 1:end), n, p);
+    xs(2, 1:end, 1:end) = der_mat * reshape(chnkr.r(2, 1:end, 1:end), n, p);
+    [~, w] = lege.exps(n);
+    s = squeeze(sqrt(sum(xs.^2, 1)));
+    mu = zeros(2*chnkr.npt, 1);
+    mu(1:2*chnkr.k:end) = sum(w .* s .* squeeze(chnkr.r(1, 1:end, 1:end)), 1);
+    mu(2:2*chnkr.k:end) = sum(w .* s .* squeeze(chnkr.r(2, 1:end, 1:end)), 1);
+    mu(3:2*chnkr.k:end) = sum(w .* squeeze(xs(1, 1:end, 1:end)), 1);
+    mu(4:2*chnkr.k:end) = sum(w .* squeeze(xs(2, 1:end, 1:end)), 1);
+    xss = zeros(size(chnkr.r));
+    xss(1, 1:end, 1:end) = der_mat * ((1./s) .* squeeze(xs(1, 1:end, 1:end)));
+    xss(2, 1:end, 1:end) = der_mat * ((1./s) .* squeeze(xs(2, 1:end, 1:end)));
+    mu(5:2*chnkr.k:end) = sum(w .* squeeze(xss(1, 1:end, 1:end)), 1);
+    mu(6:2*chnkr.k:end) = sum(w .* squeeze(xss(2, 1:end, 1:end)), 1);
+    xsss = zeros(size(chnkr.r));
+    xsss(1, 1:end, 1:end) = (1./s) .* (der_mat * ((1./s) .* squeeze(xss(1, 1:end, 1:end))));
+    xsss(2, 1:end, 1:end) = (1./s) .* (der_mat * ((1./s) .* squeeze(xss(2, 1:end, 1:end))));
+    for i = 1:p
+        j = (i - 1)*2*n;
+        k = i*2*chnkr.k;
+        mu(j + 7:2:k) = smp.dmat3 * squeeze(xsss(1, 1:end, i))';
+        mu(j + 8:2:k) = smp.dmat3 * squeeze(xsss(2, 1:end, i))';
+    end
+end
