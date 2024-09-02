@@ -89,7 +89,7 @@ function [int_i, r, mu] = update_int_info(int_i, chnkr, mu, smp)
 % Lazy copy, should refactor later
 %Matrices for getting integral coefficients
     res = chnkr.k;
-    A = CoefIntMat(res);
+    A = src.CoefIntMat(res);
     int_i.int3 = zeros(res - 2, res - 2, pan_num);
     int_i.int2 = zeros(res - 1, res - 1, pan_num);
     int_i.int1 = zeros(res, res, pan_num);

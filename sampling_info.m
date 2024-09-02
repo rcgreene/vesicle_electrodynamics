@@ -15,9 +15,9 @@ smp.umat3 = smp.n.v * eye(n, n-3) * smp.n_3.u;
 
 lob_v = zeros(n, n);
 lob_v(1:end, 1) = 1;
-t = sin(linspace(-pi/2, pi/2, 2*n));
-x = t(1:2:end);
-%x = lobatto_nodes(n);
+%t = sin(linspace(-pi/2, pi/2, 2*n));
+%x = t(1:2:end);
+x = src.lobatto_nodes(n);
 for i = 2:n
     lob_v(1:end, i) = lege.pol(x, i - 1);
 end
@@ -26,7 +26,7 @@ smp.lob_u = lob_u;
 smp.lob = lob_v; %resample at lobatto nodes from Legendre coefs.
 lob_v2 = zeros(n - 2, n);
 lob_v2(1:end, 1) = 1;
-x = lobatto_nodes(n - 2);
+x = src.lobatto_nodes(n - 2);
 for i = 2:n
     lob_v2(1:end, i) = lege.pol(x, i - 1);
 end

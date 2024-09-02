@@ -3,7 +3,7 @@ function int_i = int_info(chnkr, smp)
 res = chnkr.k;
 npt = chnkr.npt;
 pan_num = npt/res;
-A = CoefIntMat(res);
+A = src.CoefIntMat(res);
 int_i = struct;
 
 % Determine arcdensity, surface tangents, and curvature
